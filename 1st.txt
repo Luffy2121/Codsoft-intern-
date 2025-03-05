@@ -1,0 +1,31 @@
+1. Guessing a Random Number 
+
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+int main() {
+    srand(time(0));  
+    int randomNumber = rand() % 10 + 1;
+    int userGuess;
+
+    cout << "Guess the number (between 1 and 10): ";
+    cin >> userGuess;
+
+    while (userGuess != randomNumber) { 
+        if (userGuess > randomNumber) {
+            cout << "Too high! Try again: ";
+        } else {
+            cout << "Too low! Try again: ";
+        }
+        cin >> userGuess; 
+    }
+
+    cout << "Congratulations! You guessed it right!" << endl;
+    return 0;
+}
+
+
+

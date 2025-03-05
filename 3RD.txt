@@ -1,0 +1,114 @@
+
+THIRD QUESTION
+
+3. Tic Tac tOe game
+#include <iostream>
+
+using namespace std;
+
+// Tic-Tac-Toe Board (Global)
+char board[3][3] = { {'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'} };
+
+// Function to Display Board
+void displayBoard() {
+    cout << "Tic-Tac-Toe Board:" << endl;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            cout << " " << board[i][j] << " ";
+            if (j < 2) cout << "|";
+        }
+        cout << endl;
+        if (i < 2) cout << "---|---|---" << endl;
+    }
+}
+
+// Function to Check for Win
+bool checkWin() {
+    // Check Rows & Columns
+    for (int i = 0; i < 3; i++) {
+        if (board[i][0] == board[i][1] && board[i][1] == board[i][2]) return true; // Row Win
+        if (board[0][i] == board[1][i] && board[1][i] == board[2][i]) return true; // Column Win
+    }
+    // Check Diagonals
+    if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) return true;
+    if (board[0][2] == board[1][1] && board[1][1] == board[2][0]) return true;
+
+    return false;
+}
+
+// Function to Check if Board is Full (Draw)
+bool checkDraw() {
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            if (board[i][j] != 'X' && board[i][j] != 'O')
+                return false; // Empty spot found, game is not a draw
+    return true;
+}
+
+// Function to Reset Board
+void resetBoard() {
+    char num = '1';
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            board[i][j] = num++; // Reset board to 1-9
+}
+
+// Main Game Function
+void playGame() {
+    int move;
+    char currentPlayer = 'X';
+    bool gameOver = false;
+
+    while (!gameOver) {
+        displayBoard();
+
+        // Player Input
+        cout << "Player " << currentPlayer << ", enter your move (1-9): ";
+        cin >> move;
+
+        // Convert move (1-9) to board indexes
+        int row = (move - 1) / 3;
+        int col = (move - 1) % 3;
+
+        // Check if the move is valid
+        if (move < 1 || move > 9 || board[row][col] == 'X' || board[row][col] == 'O') {
+            cout << "Invalid move! Try again." << endl;
+            continue; // Skip rest of the loop & ask for input again
+        }
+
+        // Update board
+        board[row][col] = currentPlayer;
+
+        // Check for a Win
+        if (checkWin()) {
+            displayBoard();
+            cout << "Player " << currentPlayer << " wins! 🎉" << endl;
+            gameOver = true;
+        }
+        // Check for Draw
+        else if (checkDraw()) {
+            displayBoard();
+            cout << "It's a draw! 🤝" << endl;
+            gameOver = true;
+        }
+        // Switch Player
+        else {
+            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+        }
+    }
+}
+
+// Main Function
+int main() {
+    char playAgain;
+
+    do {
+        resetBoard();
+        playGame();
+        cout << "Do you want to play again? (y/n): ";
+        cin >> playAgain;
+    } while (playAgain == 'y' || playAgain == 'Y');
+
+    cout << "Thanks for playing! 😊" << endl;
+    return 0;
+}
